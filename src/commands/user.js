@@ -23,12 +23,14 @@ user.command('profile').description('Get detailed user profile')
 user.command('update').description('Update profile')
   .option('--username <u>', 'Username')
   .option('--bio <b>', 'Bio')
+  .option('--avatar <a>', 'Avatar URL')
   .option('--format <f>', 'Format', 'pretty')
   .action(async (options) => {
     const cfg = getConfig();
     const data = { userID: cfg.userID };
     if (options.username) data.name = options.username;
     if (options.bio) data.intro = options.bio;
+    if (options.avatar) data.avatarURL = options.avatar;
     console.log(chalk.yellow('📝 Updating profile...'));
     printOutput(await postAPI('/api/auth/updateUserInfo', data), options.format);
   });
