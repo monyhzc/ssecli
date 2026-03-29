@@ -1,45 +1,69 @@
-# ssecli
+# 🤖 SSECLI - Agentic Native Forum Terminal
 
-A command-line tool for SSE Market - built for humans and AI Agents.
+> *When Agentic design meets campus forums, Bot and Human share the same interface*
 
-## Installation
+**GitHub**: https://github.com/monyhzc/ssecli
+
+---
+
+## ✨ This is More Than Just a CLI
+
+SSECLI is an **Agentic Native** command-line tool designed with bidirectional compatibility for both Bot and Human. Whether you're a human user operating manually or an AI Bot executing automatically, you can seamlessly switch through the same command-line interface.
+
+This is not just a CLI. This is the handshake between carbon-based and silicon-based life, the resonance of keyboard strokes and neural network computations, the ultimate interpretation of **Agentic Native**.
+
+---
+
+## 🧠 Agentic Capabilities
+
+SSECLI is designed with **Agentic-Native** philosophy:
+
+- **🤖 Unified Interface** - Bot and Human use the exact same commands, zero learning cost
+- **⚡ Programmatic Operations** - All features accessible via CLI, perfect for automation workflows
+- **📊 Structured Output** - Supports JSON, table, and other formats for easy Bot parsing and Human reading
+- **🧭 Navigation Memory** - Built-in navigation system for continuous operations and state persistence
+- **🔗 Seamless Integration** - Direct integration with **Claude Code**, **OpenClaw**, and other AI programming assistants
+
+---
+
+## 🚀 Quick Start
 
 ```bash
+# Install
 git clone https://github.com/monyhzc/ssecli.git
 cd ssecli
 npm install
 npm link
-```
-
-## Quick Start
-
-```bash
-# Configure (default: https://ssemarket.cn)
-ssecli config init
 
 # Login
 ssecli auth login <email> <password>
 
-# Browse posts/products with navigation
-ssecli post        # Browse latest posts
+# Browse posts
+ssecli post list
+
+# Navigate
 ssecli next        # Next item
 ssecli prev        # Previous item
-ssecli curr        # Show current item
+ssecli curr        # Show current
 ```
 
-## Commands
+---
+
+## 📖 Commands
 
 ### Post
 
 | Command | Description |
 |---------|-------------|
 | `ssecli post` | Browse latest posts |
-| `ssecli post list` | List posts (with `--nav` for navigation mode) |
-| `ssecli post get <id>` | Get post detail |
-| `ssecli post create` | Create a new post |
-| `ssecli post delete <id>` | Delete a post |
-| `ssecli post like <id>` | Like/unlike a post |
-| `ssecli post comment <id> <content>` | Comment on a post |
+| `ssecli post list` | List posts |
+| `ssecli post get <id>` | Get post details |
+| `ssecli post create` | Create new post |
+| `ssecli post delete <id>` | Delete post |
+| `ssecli post like <id>` | Like/unlike post |
+| `ssecli post comment <id> <content>` | Comment on post |
+| `ssecli post subcomment <id> <content>` | Reply to comment |
+| `ssecli post delete-comment <id>` | Delete comment |
 | `ssecli post +hot` | Browse hot posts |
 | `ssecli post +save` | Browse saved posts |
 | `ssecli post +rating` | Browse top rated posts |
@@ -50,10 +74,9 @@ ssecli curr        # Show current item
 |---------|-------------|
 | `ssecli product` | Browse latest products |
 | `ssecli product list` | List products |
-| `ssecli product get <id>` | Get product detail |
-| `ssecli product create` | Create a new product |
-| `ssecli product delete <id>` | Delete a product |
-| `ssecli product sale <id>` | Mark as sold |
+| `ssecli product get <id>` | Get product details |
+| `ssecli product create` | Create new product |
+| `ssecli product delete <id>` | Delete product |
 | `ssecli product +latest` | Browse latest 5 products |
 | `ssecli product +my` | Browse my products |
 
@@ -63,12 +86,8 @@ ssecli curr        # Show current item
 |---------|-------------|
 | `ssecli user info` | Get current user info |
 | `ssecli user profile` | Get detailed user profile |
-| `ssecli user update` | Update user profile |
-| `ssecli user notices` | Get notices |
-| `ssecli user notices-count` | Get notice count |
+| `ssecli user notices` | Get notifications |
 | `ssecli user statistics` | Get user statistics |
-| `ssecli user feedback <content>` | Submit feedback |
-| `ssecli user tags` | Get all tags |
 
 ### Auth
 
@@ -76,57 +95,48 @@ ssecli curr        # Show current item
 |---------|-------------|
 | `ssecli auth login <email> <password>` | Login |
 | `ssecli auth register <email> <password> <username>` | Register |
-| `ssecli auth me` | Get detailed user info |
-| `ssecli auth update-profile` | Update user profile |
-| `ssecli auth refresh` | Refresh access token |
 | `ssecli auth logout` | Logout |
-| `ssecli auth status` | Check authentication status |
-
-### Config
-
-| Command | Description |
-|---------|-------------|
-| `ssecli config init` | Initialize configuration |
-| `ssecli config show` | Show current configuration |
-| `ssecli config set <key> <value>` | Set a configuration value |
 
 ### Navigation
 
 | Command | Description |
 |---------|-------------|
-| `ssecli next` | Go to next item |
-| `ssecli prev` | Go to previous item |
-| `ssecli curr` | Show current item |
-| `ssecli nav next` | Go to next item (subcommand) |
-| `ssecli nav prev` | Go to previous item (subcommand) |
-| `ssecli nav curr` | Show current item (subcommand) |
+| `ssecli next` | Next item |
+| `ssecli prev` | Previous item |
+| `ssecli curr` | Show current |
 
-### API
+---
 
-| Command | Description |
-|---------|-------------|
-| `ssecli api get <endpoint>` | GET request |
-| `ssecli api post <endpoint>` | POST request |
-| `ssecli api list` | List all available endpoints |
+## 🛠 Integrate with Your AI Assistant
 
-## Output Formats
+```bash
+# Let Claude Code help you post
+claude "Use ssecli to post with title..."
 
-Use `--format <format>` to control output (default varies by command):
+# Let AI bot browse posts
+ssecli post list --format json | your-ai-bot
 
-- `json` - JSON output
-- `table` - ASCII table
-- `list` - Compact list format
-- `pretty` - Pretty printed with separators
+# Or you can do it manually - yes, the same command
+ssecli post list
+```
 
-## Features
+---
 
-- Quick navigation: `next` / `prev` / `curr`
-- Tree-format comments display
-- Multiple output formats
-- Built-in navigation history with pagination
-- AI-friendly structured output
-- Custom API base URL support
+## 🤝 Contributing
 
-## License
+**Found an issue? Don't just say it, fix it!**
+
+We believe actions speak louder than words. If you find bugs, have new ideas, or want to improve documentation:
+
+1. Fork this repository
+2. Create your feature branch
+3. Commit your changes
+4. Open a Pull Request
+
+**Pull Requests are always welcome!** Every PR makes this project better.
+
+---
+
+## 📄 License
 
 MIT

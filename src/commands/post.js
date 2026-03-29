@@ -119,10 +119,30 @@ post.command('comment <postId> <content>').description('Comment on post')
   .action(async (postId, content, options) => {
     const cfg = getConfig();
     console.log(chalk.yellow('💬 Commenting...'));
-    printOutput(await postAPI('/api/auth/addComment', {
+    printOutput(await postAPI('/api/auth/postPcomment', {
       UserTelephone: cfg.userPhone || '',
       PostID: parseInt(postId),
-      PostType: 'post',
+      Content: content,
+    }), options.format);
+  });
+
+post.command('delete-comment <commentId>').description('Delete a comment')
+  .option('--format <f>', 'Format', 'pretty')
+  .action(async (commentId, options) => {
+    console.log(chalk.yellow('🗑️ Deleting comment...'));
+    printOutput(await postAPI('/api/auth/deletePcomment', {
+      PcommentID: parseInt(commentId),
+    }), options.format);
+  });
+
+post.command('subcomment <commentId> <content>').description('Reply to a comment')
+  .option('--format <f>', 'Format', 'pretty')
+  .action(async (commentId, content, options) => {
+    const cfg = getConfig();
+    console.log(chalk.yellow('💬 Replying to comment...'));
+    printOutput(await postAPI('/api/auth/postCcomment', {
+      UserTelephone: cfg.userPhone || '',
+      PcommentID: parseInt(commentId),
       Content: content,
     }), options.format);
   });
