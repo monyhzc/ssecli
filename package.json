@@ -1,0 +1,32 @@
+{
+  "name": "ssemarket-cli",
+  "version": "1.0.0",
+  "description": "Command-line tool for SSE Market - built for humans and AI Agents",
+  "main": "src/index.js",
+  "bin": {
+    "ssecli": "./bin/ssemarket-cli.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "cli",
+    "sse-market",
+    "marketplace"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "chalk": "^4.1.2",
+    "cli-table3": "^0.6.5",
+    "commander": "^12.0.0",
+    "dotenv": "^16.4.0",
+    "fs-extra": "^11.2.0",
+    "inquirer": "^9.2.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
