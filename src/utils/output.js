@@ -12,15 +12,39 @@ function formatValue(value, depth = 0) {
   if (value === null || value === undefined) return '';
   if (Array.isArray(value)) {
     if (value.length === 0) return '[]';
-    if (typeof value[0] === 'object' && value[0] !== null) {
+    if (value.length === 1) {
+      return `[${formatValue(value[0], depth + 1)}]`;
+    }
+    const first = value[0];
+    const second = value[1];
+    if (first && typeof first === 'object' && first !== null) {
+      if (first.Title || first.Name) {
+        const titles = value.slice(0, 3).map(item => {
+          const title = item.Title || item.Name || item.title || item.name || JSON.stringify(item);
+          return truncate(title, 20);
+        });
+        return `[${titles.join(', ')}${value.length > 3 ? `, ...(${value.length} items)` : ''}]`;
+      }
       return chalk.gray(`[Array(${value.length})]`);
     }
-    return `[${value.map(v => formatValue(v, depth + 1)).join(', ')}]`;
+    if (value.length <= 3) {
+      return `[${value.map(v => formatValue(v, depth + 1)).join(', ')}]`;
+    }
+    return `[${formatValue(first, depth + 1)}, ${formatValue(second, depth + 1)}, ...]`;
   }
   if (typeof value === 'object') {
     const keys = Object.keys(value);
     if (keys.length === 0) return '{}';
-    return chalk.gray(`[Object]`);
+    if (value.Title || value.title || value.Name || value.name) {
+      const title = value.Title || value.title || value.Name || value.name;
+      return `{${truncate(title, 25)}}`;
+    }
+    if (keys.length === 1) {
+      return `{${keys[0]}: ${formatValue(value[keys[0]], depth + 1)}}`;
+    }
+    const firstKey = keys[0];
+    const secondKey = keys[1];
+    return chalk.gray(`{${keys.length} keys: ${firstKey}, ${secondKey}${keys.length > 2 ? '...' : ''}}`);
   }
   return String(value);
 }
