@@ -7,6 +7,24 @@ function truncate(str, maxLen = 50) {
   return str.length <= maxLen ? str : str.substring(0, maxLen) + chalk.gray('...');
 }
 
+function formatValue(value, depth = 0) {
+  if (depth > 2) return chalk.gray('[Nested...]');
+  if (value === null || value === undefined) return '';
+  if (Array.isArray(value)) {
+    if (value.length === 0) return '[]';
+    if (typeof value[0] === 'object' && value[0] !== null) {
+      return chalk.gray(`[Array(${value.length})]`);
+    }
+    return `[${value.map(v => formatValue(v, depth + 1)).join(', ')}]`;
+  }
+  if (typeof value === 'object') {
+    const keys = Object.keys(value);
+    if (keys.length === 0) return '{}';
+    return chalk.gray(`[Object]`);
+  }
+  return String(value);
+}
+
 function formatOutput(data, format = 'table') {
   switch (format) {
     case 'json': return JSON.stringify(data, null, 2);
@@ -32,17 +50,17 @@ function formatAsTable(data) {
     const table = new Table({ head: headers.map(h => chalk.cyan.bold(h)) });
     data.forEach(item => table.push(headers.map(key => {
       const value = item[key];
-      return typeof value === 'string' && value.length > 60 ? truncate(value, 60) : (value || '');
+      return typeof value === 'string' && value.length > 60 ? truncate(value, 60) : formatValue(value);
     })));
     return table.toString();
   } else if (typeof data === 'object') {
     const table = new Table();
     Object.entries(data).forEach(([key, value]) => {
-      table.push({ [chalk.cyan.bold(key)]: truncate(String(value), 100) });
+      table.push({ [chalk.cyan.bold(key)]: truncate(formatValue(value), 100) });
     });
     return table.toString();
   }
-  return String(data);
+  return formatValue(data);
 }
 
 function formatAsList(data) {
@@ -61,12 +79,12 @@ function formatAsList(data) {
    ${chalk.green('¥')}${item.Price}
    ${chalk.gray(truncate(item.Description, 80))}`;
       }
-      return `\n${chalk.yellow.bold(`#${i + 1}`)}\n${Object.entries(item).slice(0, 6).map(([k, v]) => `   ${chalk.cyan(k)}: ${truncate(String(v), 50)}`).join('\n')}`;
+      return `\n${chalk.yellow.bold(`#${i + 1}`)}\n${Object.entries(item).slice(0, 6).map(([k, v]) => `   ${chalk.cyan(k)}: ${truncate(formatValue(v), 50)}`).join('\n')}`;
     }).join('\n');
   } else if (typeof data === 'object') {
-    return Object.entries(data).map(([k, v]) => `${chalk.cyan.bold(k)}: ${v}`).join('\n');
+    return Object.entries(data).map(([k, v]) => `${chalk.cyan.bold(k)}: ${formatValue(v)}`).join('\n');
   }
-  return String(data);
+  return formatValue(data);
 }
 
 function formatAsPretty(data) {
@@ -81,7 +99,7 @@ function formatAsPretty(data) {
         : `\n${borderColor('━━━')} ${chalk.bold(i + 1)} ${borderColor('━━━')}`;
       return headerLine + '\n' +
         Object.entries(item).filter(([k]) => !skip.includes(k)).map(([k, v]) => {
-          const val = String(v);
+          const val = formatValue(v);
           const keyColor = isMony ? chalk.yellow.bold : chalk.cyan.bold;
           return `  ${keyColor(k.padEnd(12))}: ${val.length > 200 ? val.substring(0, 200) + '\n  ' + chalk.gray('...') : val}`;
         }).join('\n');
@@ -96,11 +114,11 @@ function formatAsPretty(data) {
     }
     result += Object.entries(data).filter(([k]) => !skip.includes(k)).map(([k, v]) => {
       const keyColor = isMony ? chalk.yellow.bold : chalk.cyan.bold;
-      return `${keyColor(k)}: ${v}`;
+      return `${keyColor(k)}: ${formatValue(v)}`;
     }).join('\n');
     return result;
   }
-  return String(data);
+  return formatValue(data);
 }
 
 function printOutput(data, format = 'list') {
