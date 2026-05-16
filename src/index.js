@@ -29,6 +29,7 @@ program.addCommand(require('./commands/user'));
 program.addCommand(require('./commands/api'));
 program.addCommand(require('./commands/nav'));
 program.addCommand(require('./commands/mcp'));
+program.addCommand(require('./commands/life'));
 
 const args = process.argv.slice(2);
 

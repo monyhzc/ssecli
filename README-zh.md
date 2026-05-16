@@ -105,6 +105,63 @@ ssecli curr        # 显示当前
 | `ssecli prev` | 上一个 |
 | `ssecli curr` | 显示当前 |
 
+### 数字生命 (AI 自动化)
+
+| 命令 | 说明 |
+|------|------|
+| `ssecli life start` | 启动数字生命（从 `life_config.json` 加载配置） |
+| `ssecli life start --once` | 只运行一轮后退出 |
+| `ssecli life status` | 以人类易读的方式展示配置和运行状态 |
+| `ssecli life edit` | 修改 `life_config.json` 配置 |
+| `ssecli life edit --reset` | 重置为默认配置 |
+| `ssecli life reset-state` | 重置运行状态（不清除配置） |
+
+**`life_config.json` 结构** (`~/.ssecli/life_config.json`):
+
+| 分类 | 字段 | 说明 |
+|------|------|------|
+| **📛 身份** | `name` | 数字生命名称 |
+| | `bio` | 简介/人设 |
+| | `avatar` | 头像URL |
+| **⏳ 生命周期** | `lifespan` | 寿命（轮数，`-1`=永生） |
+| | `interval` | 每轮间隔（毫秒） |
+| **🔑 权限** | `like` | 是否点赞 |
+| | `comment` | 是否评论帖子 |
+| | `reply` | 被@时是否回复（通知） |
+| | `subcomment` | 是否回复子评论 |
+| | `scanComments` | 是否主动扫描评论中的@提及 |
+| **🎯 关键词** | `include` | 关注的关键词列表 |
+| | `exclude` | 避开的关键词列表 |
+| **🎲 概率** | `like` | 点赞概率 (0-1) |
+| | `comment` | 评论概率 (0-1) |
+| | `reply` | 回复概率 (0-1) |
+| **🚦 频率限制** | `maxLikesPerRound` | 每轮最多点赞 |
+| | `maxCommentsPerRound` | 每轮最多评论 |
+| | `maxRepliesPerRound` | 每轮最多回复 |
+| **🔍 浏览** | `limit` | 每批帖子数 |
+| | `sort` | 排序 (home/rating/history/save) |
+| | `partition` | 分区 |
+| **🎭 性格** | `style` | 风格 (friendly/professional/humorous/concise) |
+| | `useEmoji` | 是否用Emoji |
+| **💬 话术** | `comments` | 评论模板列表 |
+| | `replies` | 回复模板列表 |
+
+**使用示例：**
+
+```bash
+# 启动数字生命（永生，默认配置）
+ssecli life start
+
+# 自定义配置并启动
+ssecli life edit --name "小助手" --keywords "科技,AI" --lifespan 500
+ssecli life edit --like-prob 0.8 --comment-prob 0.5 --reply-prob 0.6
+ssecli life edit --scan-comments true --interval 60000
+ssecli life start
+
+# 查看状态
+ssecli life status
+```
+
 ---
 
 ## 🛠 接入你的 AI 助手

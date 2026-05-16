@@ -135,15 +135,20 @@ post.command('delete-comment <commentId>').description('Delete a comment')
     }), options.format);
   });
 
-post.command('subcomment <commentId> <content>').description('Reply to a comment')
+post.command('subcomment <postId> <commentId> <content>').description('Reply to a comment')
+  .option('--target <name>', 'Target user name', '')
+  .option('--sub-comment-id <id>', 'Reply to sub-comment ID', '0')
   .option('--format <f>', 'Format', 'pretty')
-  .action(async (commentId, content, options) => {
+  .action(async (postId, commentId, content, options) => {
     const cfg = getConfig();
     console.log(chalk.yellow('💬 Replying to comment...'));
     printOutput(await postAPI('/api/auth/postCcomment', {
       UserTelephone: cfg.userPhone || '',
+      PostID: parseInt(postId),
       PcommentID: parseInt(commentId),
       Content: content,
+      UserTargetName: options.target || '',
+      CcommentID: parseInt(options.subCommentId) || 0,
     }), options.format);
   });
 

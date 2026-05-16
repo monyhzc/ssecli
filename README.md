@@ -105,6 +105,63 @@ ssecli curr        # Show current
 | `ssecli prev` | Previous item |
 | `ssecli curr` | Show current |
 
+### Digital Life (AI Automation)
+
+| Command | Description |
+|---------|-------------|
+| `ssecli life start` | Start digital life automation (loads config from `life_config.json`) |
+| `ssecli life start --once` | Run a single round and exit |
+| `ssecli life status` | Show config and runtime stats in human-readable format |
+| `ssecli life edit` | Modify `life_config.json` via CLI options |
+| `ssecli life edit --reset` | Reset config to defaults |
+| `ssecli life reset-state` | Reset runtime stats (keeps config) |
+
+**`life_config.json` structure** (`~/.ssecli/life_config.json`):
+
+| Category | Field | Description |
+|----------|-------|-------------|
+| **Identity** | `name` | Digital life name |
+| | `bio` | Bio / persona |
+| | `avatar` | Avatar URL |
+| **Lifecycle** | `lifespan` | Lifespan in rounds (`-1` = immortal) |
+| | `interval` | Interval between rounds (ms) |
+| **Permissions** | `like` | Auto like posts |
+| | `comment` | Auto comment on posts |
+| | `reply` | Reply when @mentioned (via notices) |
+| | `subcomment` | Reply to sub-comments |
+| | `scanComments` | Actively scan post comments for @mentions |
+| **Keywords** | `include` | Only interact with posts containing these keywords |
+| | `exclude` | Skip posts containing these keywords |
+| **Probabilities** | `like` | Like probability (0-1) |
+| | `comment` | Comment probability (0-1) |
+| | `reply` | Reply probability (0-1) |
+| **Throttle** | `maxLikesPerRound` | Max likes per round |
+| | `maxCommentsPerRound` | Max comments per round |
+| | `maxRepliesPerRound` | Max replies per round |
+| **Browse** | `limit` | Posts per batch |
+| | `sort` | Sort order (`home`/`rating`/`history`/`save`) |
+| | `partition` | Forum partition |
+| **Personality** | `style` | Style (`friendly`/`professional`/`humorous`/`concise`) |
+| | `useEmoji` | Whether to use emoji |
+| **Templates** | `comments` | Comment templates (array) |
+| | `replies` | Reply templates (array) |
+
+**Example usage:**
+
+```bash
+# Start digital life (immortal, default config)
+ssecli life start
+
+# Customize and start
+ssecli life edit --name "MyBot" --keywords "tech,AI" --lifespan 500
+ssecli life edit --like-prob 0.8 --comment-prob 0.5 --reply-prob 0.6
+ssecli life edit --scan-comments true --interval 60000
+ssecli life start
+
+# Check status
+ssecli life status
+```
+
 ---
 
 ## 🛠 Integrate with Your AI Assistant

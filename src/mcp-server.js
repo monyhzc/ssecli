@@ -258,15 +258,20 @@ server.tool('create_comment', 'Create comment or reply (Write)', {
   postId: z.number(),
   content: z.string(),
   parentCommentId: z.number().optional(),
-}, async ({ postId, content, parentCommentId }) => {
+  userTargetName: z.string().optional(),
+  subCommentId: z.number().optional(),
+}, async ({ postId, content, parentCommentId, userTargetName, subCommentId }) => {
   try {
     const cfg = getConfig();
     let result;
     if (parentCommentId) {
       result = await postAPI('/api/auth/postCcomment', {
         UserTelephone: cfg.userPhone || '',
+        PostID: postId,
         PcommentID: parentCommentId,
         Content: content,
+        UserTargetName: userTargetName || '',
+        CcommentID: subCommentId || 0,
       });
     } else {
       result = await postAPI('/api/auth/postPcomment', {
